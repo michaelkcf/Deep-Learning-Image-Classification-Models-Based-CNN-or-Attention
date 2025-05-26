@@ -6,15 +6,15 @@ import torch.nn as nn
 from torchvision import transforms, datasets 
 import torch.optim as optim 
 from tqdm import tqdm  
-#from classic_models.alexnet import AlexNet
-from classic_models.googlenet_v1 import  GoogLeNet
+from classic_models.alexnet import AlexNet
+#from classic_models.googlenet_v1 import  GoogLeNet
 def main():
     # 判断可用设备
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("using {} device.".format(device))
 
     # 注意改成自己的数据集路径
-    data_path = '/mnt/d/Datasets/flower'
+    data_path = 'flower'
     assert os.path.exists(data_path), "{} path does not exist.".format(data_path) 
 
     # 数据预处理与增强
@@ -58,16 +58,16 @@ def main():
     print("using {} images for training, {} images for validation.".format(train_num, val_num))
     
     # 实例化模型，并送进设备
-    net = GoogLeNet(num_classes = 5)
-    #net = AlexNet(num_classes=5 )
+    #net = GoogLeNet(num_classes = 5)
+    net = AlexNet(num_classes=5 )
     net.to(device)
 
     # 指定损失函数用于计算损失；指定优化器用于更新模型参数；指定训练迭代的轮数，训练权重的存储地址
     loss_function = nn.CrossEntropyLoss() # MSE
     optimizer = optim.Adam(net.parameters(), lr=0.0002)
     epochs = 70
-    save_path = os.path.abspath(os.path.join(os.getcwd(), './results/weights/alexnet')) 
-    if not os.path.exists(save_path):    
+    save_path = os.path.abspath(os.path.join(os.getcwd(), 'results/weights/alexnet'))
+    if not os.path.exists(save_path):
         os.makedirs(save_path)
 
     best_acc = 0.0 # 初始化验证集上最好的准确率，以便后面用该指标筛选模型最优参数。  
